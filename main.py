@@ -19,7 +19,7 @@ writer = SummaryWriter(log_train)
 
 v = ViT(
     image_size=128, # 256
-    patch_size=8, # 32
+    patch_size=32, # 32
     num_classes=2,
     dim=512, # 1024
     depth=2,
@@ -44,40 +44,38 @@ v.cuda()
 # bce.cuda()
 criterion.cuda()
 
+##### Load train, val, test dataset #####
+train_set = FastQTMTDataset("train")
+val_set = FastQTMTDataset("val")
+test_set = FastQTMTDataset("test")
 
-##### Load and split dataset -> Dataloader #####
-dataset = FastQTMTDataset()
-torch.manual_seed(0)
-lengths = [int(len(dataset)*0.8), int(len(dataset)*0.1), len(dataset) - (int(len(dataset)*0.8) +int(len(dataset)*0.1))]
-train_set, val_set, test_set = torch.utils.data.random_split(dataset, lengths)
-# train_set, val_set = torch.utils.data.random_split(train_set_org, lengths)
-# count0 = 0
-# count1 = 0
-# for idx in train_set.indices:
-#     label = int(dataset[idx][1])
-#     if label == 0:
-#         count0 += 1
-#     else:
-#         count1 += 1
-# print("Train 0 1", count0, count1)
-# count0 = 0
-# count1 = 0
-# for idx in val_set.indices:
-#     label = int(dataset[idx][1])
-#     if label == 0:
-#         count0 += 1
-#     else:
-#         count1 += 1
-# print("Val 0 1", count0, count1)
-# count0 = 0
-# count1 = 0
-# for idx in test_set.indices:
-#     label = int(dataset[idx][1])
-#     if label == 0:
-#         count0 += 1
-#     else:
-#         count1 += 1
-# print("Test 0 1", count0, count1)
+count0 = 0
+count1 = 0
+for idx in range(len(train_set)):
+    label = int(train_set[idx][1])
+    if label == 0:
+        count0 += 1
+    else:
+        count1 += 1
+print("Train 0 1", count0, count1)
+count0 = 0
+count1 = 0
+for idx in range(len(val_set)):
+    label = int(val_set[idx][1])
+    if label == 0:
+        count0 += 1
+    else:
+        count1 += 1
+print("Val 0 1", count0, count1)
+count0 = 0
+count1 = 0
+for idx in range(len(test_set)):
+    label = int(test_set[idx][1])
+    if label == 0:
+        count0 += 1
+    else:
+        count1 += 1
+print("Test 0 1", count0, count1)
 
 train_loader = torch.utils.data.DataLoader(
     train_set, batch_size=batch_size, shuffle=True, num_workers=num_workers, pin_memory=True

@@ -5,8 +5,8 @@ import glob
 import os
 
 class FastQTMTDataset(torch.utils.data.Dataset):
-    def __init__(self):
-        self.root_path = "./FastQTMTDataset/train/128x128/"
+    def __init__(self, mode):
+        self.root_path = "./FastQTMTDataset/" + mode + "/128x128/"
         self.image_paths = os.listdir(self.root_path)
         self.all_img_paths = []
         for image_path in self.image_paths:
@@ -41,18 +41,24 @@ class FastQTMTDataset(torch.utils.data.Dataset):
 #         count1 += 1
 # print("Label0:", count0, "Label1:", count1)
 
-# root_path = "./FastQTMTDataset/train/128x128/"
+##### check num of images per sequence
+# root_path = "./FastQTMTDataset/val/128x128/"
 # image_paths = os.listdir(root_path)
 # print(len(image_paths))
 # count0 = 0
 # count1 = 0
-# for img_path in image_paths:
-#     imgs = os.listdir(os.path.join(root_path, img_path))
-#     for img in imgs:
-#         label = int(img.split('_')[2].split('.')[0]) # POC_WxH_SPLIT
-#         if label == 0:
-#             count0 += 1
-#         elif label == 1:
-#             count1 += 1
 #
-# print("Label0:", count0, "Label1:", count1)
+# seq_names = ['Beauty', 'Bosphorus', 'CityAlley', 'FlowerFocus', 'FlowerKids', 'FlowerPan', 'HoneyBee', 'Jockey', 'Lips',  'RaceNight', 'ReadySetGo', 'RiverBank', 'ShakeNDry', 'SunBath', 'Twilight', 'YachtRide']
+# for seq_name in seq_names:
+#     for img_path in image_paths:
+#         if seq_name in img_path:
+#             imgs = os.listdir(os.path.join(root_path, img_path))
+#             for img in imgs:
+#                 label = int(img.split('_')[2].split('.')[0]) # POC_WxH_SPLIT
+#                 if label == 0:
+#                     count0 += 1
+#                 elif label == 1:
+#                     count1 += 1
+#
+#     print(seq_name + "," + str(count0) + ","+ str(count1))
+#     count0, count1 = 0, 0
